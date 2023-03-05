@@ -8,7 +8,7 @@
 
 ## Group Members
 
-- Ong_Chong_How (cong0027@student.monash.edu)
+- Ong Chong How (cong0027@student.monash.edu)
 
 ## Setup
 
