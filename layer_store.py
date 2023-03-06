@@ -5,7 +5,6 @@ from layer_util import Layer
 class LayerStore(ABC):
 
     def __init__(self) -> None:
-        pass
 
     @abstractmethod
     def add(self, layer: Layer) -> bool:
@@ -45,7 +44,20 @@ class SetLayerStore(LayerStore):
     - special: Invert the colour output.
     """
 
-    pass
+    def __init__(self):
+        self.layer=None
+
+    def add(self,layer:Layer) ->bool:
+        self.layer=layer
+        return True
+
+    def erase(self, layer: Layer) -> bool:
+        self.layer=None
+        return True
+
+    def special(self):
+        invert(color, timestamp, x, y)
+
 
 class AdditiveLayerStore(LayerStore):
     """
@@ -55,7 +67,9 @@ class AdditiveLayerStore(LayerStore):
     - special: Reverse the order of current layers (first becomes last, etc.)
     """
 
-    pass
+    def add(self, layer: Layer) -> bool:
+
+
 
 class SequenceLayerStore(LayerStore):
     """

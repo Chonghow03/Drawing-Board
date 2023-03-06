@@ -24,7 +24,7 @@ class Grid:
 
         Should also intialise the brush size to the DEFAULT provided as a class variable.
         """
-        raise NotImplementedError()
+        self.brush_size= DEFAULT_BRUSH_SIZE
 
     def increase_brush_size(self):
         """
@@ -32,7 +32,8 @@ class Grid:
         if the brush size is already MAX_BRUSH,
         then do nothing.
         """
-        raise NotImplementedError()
+        if self.brush_size<MAX_BRUSH:
+            self.brush_size+=1
 
     def decrease_brush_size(self):
         """
@@ -40,10 +41,11 @@ class Grid:
         if the brush size is already MIN_BRUSH,
         then do nothing.
         """
-        raise NotImplementedError()
+        if self.brush_size>MIN_BRUSH:
+            self.brush_size -= 1
 
     def special(self):
         """
         Activate the special affect on all grid squares.
         """
-        raise NotImplementedError()
+
