@@ -1,9 +1,11 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+from data_structures.queue_adt import CircularQueue
 from data_structures.stack_adt import ArrayStack
 from layer_util import Layer
 from layers import invert
+
 
 class LayerStore(ABC):
 
@@ -40,6 +42,7 @@ class LayerStore(ABC):
         """
         pass
 
+
 class SetLayerStore(LayerStore):
     """
     Set layer store. A single layer can be stored at a time (or nothing at all)
@@ -50,9 +53,9 @@ class SetLayerStore(LayerStore):
 
     def __init__(self):
         self.layer = None
-        self.s=False
+        self.s = False
 
-    def add(self,layer:Layer) ->bool:
+    def add(self, layer: Layer) -> bool:
         self.layer = layer
         return True
 
@@ -67,13 +70,14 @@ class SetLayerStore(LayerStore):
             self.s = True
 
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
-        if self.layer==None:
-            result=start
+        if self.layer is None:
+            result = start
         else:
-            result=self.layer.apply(start,timestamp,x,y)
+            result = self.layer.apply(start, timestamp, x, y)
         if self.s:
-            result=invert.apply(result,timestamp,x,y)
+            result = invert.apply(result, timestamp, x, y)
         return result
+
 
 class AdditiveLayerStore(LayerStore):
     """
@@ -84,38 +88,34 @@ class AdditiveLayerStore(LayerStore):
     """
 
     def __init__(self):
-        self.myStack = None
+        self.myQueue = CircularQueue(1000)
         self.myStack = ArrayStack(1000)
         self.s = False
 
     def add(self, layer: Layer) -> bool:
-        if self.myStack.is_full():
-            return False
-        else:
-            self.myStack.push(layer)
-            return True
+        self.myQueue.append(layer)
+        return True
 
     def erase(self, layer: Layer) -> bool:
-        if self.myStack.is_empty():
-            return False
-        else:
-            self.myStack.pop()
-            return True
+        self.myQueue.serve()
+        return True
 
     def special(self):
-        self.s = not self.s
+        for i in range (len(self.myQueue)):
+            color = self.myQueue.serve()
+            self.myStack.push(color)
+        for j in range (len(self.myStack)):
+            stack = self.myStack.pop()
+            self.myQueue.append(stack)
+        return self.myQueue
 
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
-        if self.myStack is None:
-            result = start
-        else:
-            result = self.myStack.apply(start,timestamp,x,y)
-        if self.s:
-            for i in range(len(self.myStack)):
-                color = self.myStack.pop()
-                result = self.myStack.push(color)
-        return result
-
+        if len(self.myQueue) != 0:
+            for i in range(len(self.myQueue)):
+                queue = self.myQueue.serve()
+                start = queue.apply(start, timestamp, x, y)
+                self.myQueue.append(queue)
+        return start
 
 
 class SequenceLayerStore(LayerStore):
@@ -128,4 +128,17 @@ class SequenceLayerStore(LayerStore):
         In the event of two layers being the median names, pick the lexicographically smaller one.
     """
 
-    pass
+    def __init__(self):
+        pass
+    def add(self, layer: Layer) -> bool:
+        pass
+
+    def erase(self, layer: Layer) -> bool:
+        pass
+
+    def special(self):
+        pass
+
+    def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
+        pass
+

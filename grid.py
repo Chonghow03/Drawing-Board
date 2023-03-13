@@ -28,10 +28,21 @@ class Grid:
         """
         self.brush_size = self.DEFAULT_BRUSH_SIZE
         self.grid = ArrayR(x)
-        for i in range(x):
-            self.grid[i]=ArrayR(y)
-            for a in range(y):
-                self.grid[i][a] = SetLayerStore()
+        if draw_style == "SET":
+            for i in range(x):
+                self.grid[i]=ArrayR(y)
+                for a in range(y):
+                    self.grid[i][a] = SetLayerStore()
+        elif draw_style == "ADD":
+            for i in range(x):
+                self.grid[i]=ArrayR(y)
+                for a in range(y):
+                    self.grid[i][a] = AdditiveLayerStore()
+        else:
+            for i in range(x):
+                self.grid[i]=ArrayR(y)
+                for a in range(y):
+                    self.grid[i][a] = SequenceLayerStore()
 
     def __getitem__(self, index):
         return self.grid[index]
