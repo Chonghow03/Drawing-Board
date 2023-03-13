@@ -1,10 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+
+from data_structures.stack_adt import ArrayStack
 from layer_util import Layer
+from layers import invert
 
 class LayerStore(ABC):
 
     def __init__(self) -> None:
+        pass
 
     @abstractmethod
     def add(self, layer: Layer) -> bool:
@@ -45,19 +49,31 @@ class SetLayerStore(LayerStore):
     """
 
     def __init__(self):
-        self.layer=None
+        self.layer = None
+        self.s=False
 
     def add(self,layer:Layer) ->bool:
-        self.layer=layer
+        self.layer = layer
         return True
 
     def erase(self, layer: Layer) -> bool:
-        self.layer=None
+        self.layer = None
         return True
 
     def special(self):
-        invert(color, timestamp, x, y)
+        if self.s:
+            self.s = False
+        else:
+            self.s = True
 
+    def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
+        if self.layer==None:
+            result=start
+        else:
+            result=self.layer.apply(start,timestamp,x,y)
+        if self.s:
+            result=invert.apply(result,timestamp,x,y)
+        return result
 
 class AdditiveLayerStore(LayerStore):
     """
@@ -67,7 +83,38 @@ class AdditiveLayerStore(LayerStore):
     - special: Reverse the order of current layers (first becomes last, etc.)
     """
 
+    def __init__(self):
+        self.myStack = None
+        self.myStack = ArrayStack(1000)
+        self.s = False
+
     def add(self, layer: Layer) -> bool:
+        if self.myStack.is_full():
+            return False
+        else:
+            self.myStack.push(layer)
+            return True
+
+    def erase(self, layer: Layer) -> bool:
+        if self.myStack.is_empty():
+            return False
+        else:
+            self.myStack.pop()
+            return True
+
+    def special(self):
+        self.s = not self.s
+
+    def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
+        if self.myStack is None:
+            result = start
+        else:
+            result = self.myStack.apply(start,timestamp,x,y)
+        if self.s:
+            for i in range(len(self.myStack)):
+                color = self.myStack.pop()
+                result = self.myStack.push(color)
+        return result
 
 
 
