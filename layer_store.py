@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from layer_util import Layer
-#cvbnm,mnbvcxcvbnm,mnbvc
+
 class LayerStore(ABC):
 
     def __init__(self) -> None:
