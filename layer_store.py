@@ -1,7 +1,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+from data_structures.array_sorted_list import ArraySortedList
 from data_structures.queue_adt import CircularQueue
+from data_structures.sorted_list_adt import ListItem
 from data_structures.stack_adt import ArrayStack
 from layer_util import Layer
 from layers import invert
@@ -101,10 +103,10 @@ class AdditiveLayerStore(LayerStore):
         return True
 
     def special(self):
-        for i in range (len(self.myQueue)):
+        for i in range(len(self.myQueue)):
             color = self.myQueue.serve()
             self.myStack.push(color)
-        for j in range (len(self.myStack)):
+        for j in range(len(self.myStack)):
             stack = self.myStack.pop()
             self.myQueue.append(stack)
         return self.myQueue
@@ -129,16 +131,44 @@ class SequenceLayerStore(LayerStore):
     """
 
     def __init__(self):
-        pass
+        self.mySortedlist = ArraySortedList(1000)
+        self.lexicographic_list = ArraySortedList(1000)
+
     def add(self, layer: Layer) -> bool:
-        pass
+        if ListItem(layer,layer.index) not in self.mySortedlist:
+            self.mySortedlist.add(ListItem(layer, layer.index))
+            return True
+        return False
 
     def erase(self, layer: Layer) -> bool:
-        pass
+        if self.mySortedlist.__contains__(ListItem(layer, layer.index)):
+            self.mySortedlist.remove(ListItem(layer,layer.index))
+            return True
+        return False
 
     def special(self):
-        pass
+        if self.mySortedlist.is_empty():
+            return
+
+        for i in range(len(self.mySortedlist)):
+            self.lexicographic_list.add(ListItem(self.mySortedlist[i].value, self.mySortedlist[
+                i].value.name))  # copy self.mySortedlist to self.lexicographic_list
+        self.mySortedlist.clear()  # clear mySortedlist
+
+        index_of_median = (len(self.lexicographic_list)-1)// 2
+        if len(self.lexicographic_list) % 2 != 0:
+            self.lexicographic_list.delete_at_index(index_of_median)
+        else:
+            self.lexicographic_list.delete_at_index(index_of_median)
+
+        for j in range(len(self.lexicographic_list)):
+            self.mySortedlist.add(ListItem(self.lexicographic_list[j].value, self.lexicographic_list[j].value.index))
+        self.lexicographic_list.clear()
+        return self.mySortedlist
 
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
-        pass
-
+        if len(self.mySortedlist) != 0:
+            for i in range(len(self.mySortedlist)):
+                color = self.mySortedlist[i].value
+                start = color.apply(start, timestamp, x, y)
+        return start
