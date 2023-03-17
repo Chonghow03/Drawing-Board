@@ -15,6 +15,7 @@ class Grid:
     MAX_BRUSH = 5
     MIN_BRUSH = 0
 
+
     def __init__(self, draw_style, x, y) -> None:
         """
         Initialise the grid object.
@@ -69,5 +70,8 @@ class Grid:
         """
         Activate the special affect on all grid squares.
         """
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[0])):
+                self.grid[i][j].special()   #Call layerstore special
 
 
