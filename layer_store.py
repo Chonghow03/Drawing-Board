@@ -90,17 +90,23 @@ class AdditiveLayerStore(LayerStore):
     """
 
     def __init__(self):
-        self.myQueue = CircularQueue(1000)
-        self.myStack = ArrayStack(1000)
+        self.myQueue = CircularQueue(100000)
+        self.myStack = ArrayStack(100000)
         self.s = False
 
     def add(self, layer: Layer) -> bool:
-        self.myQueue.append(layer)
-        return True
+        if self.myQueue.is_full():
+            return False
+        else:
+            self.myQueue.append(layer)
+            return True
 
     def erase(self, layer: Layer) -> bool:
-        self.myQueue.serve()
-        return True
+        if self.myQueue.is_empty():
+            return False
+        else:
+            self.myQueue.serve()
+            return True
 
     def special(self):
         for i in range(len(self.myQueue)):
@@ -131,8 +137,8 @@ class SequenceLayerStore(LayerStore):
     """
 
     def __init__(self):
-        self.mySortedlist = ArraySortedList(1000)
-        self.lexicographic_list = ArraySortedList(1000)
+        self.mySortedlist = ArraySortedList(100000)
+        self.lexicographic_list = ArraySortedList(100000)
 
     def add(self, layer: Layer) -> bool:
         if ListItem(layer,layer.index) not in self.mySortedlist:

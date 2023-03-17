@@ -1,9 +1,13 @@
 from __future__ import annotations
 from action import PaintAction
+from data_structures.queue_adt import CircularQueue
 from grid import Grid
+
 
 class ReplayTracker:
 
+    def __init__(self):
+        self.replay_action = CircularQueue(1000)
 
     def start_replay(self) -> None:
         """
@@ -11,16 +15,15 @@ class ReplayTracker:
 
         Useful if you have any setup to do before `play_next_action` should be called.
         """
-        pass
 
-    def add_action(self, action: PaintAction, is_undo: bool=False) -> None:
+    def add_action(self, action: PaintAction, is_undo: bool = False) -> None:
         """
         Adds an action to the replay.
 
         `is_undo` specifies whether the action was an undo action or not.
         Special, Redo, and Draw all have this is False.
         """
-        pass
+        self.replay_action.append((action, is_undo))
 
     def play_next_action(self, grid: Grid) -> bool:
         """
@@ -29,7 +32,15 @@ class ReplayTracker:
             - If there were no more actions to play, and so nothing happened, return True.
             - Otherwise, return False.
         """
-        pass
+        if not self.replay_action.is_empty():
+            action = self.replay_action.serve()
+            if not action[1]:
+                action[0].redo_apply(grid)
+            else:
+                action[0].undo_apply(grid)
+            return False
+        return True
+
 
 if __name__ == "__main__":
     action1 = PaintAction([], is_special=True)
@@ -44,9 +55,8 @@ if __name__ == "__main__":
     r.add_action(action2, is_undo=True)
     # Start the replay.
     r.start_replay()
-    f1 = r.play_next_action(g) # action 1, special
-    f2 = r.play_next_action(g) # action 2, draw
-    f3 = r.play_next_action(g) # action 2, undo
+    f1 = r.play_next_action(g)  # action 1, special
+    f2 = r.play_next_action(g)  # action 2, draw
+    f3 = r.play_next_action(g)  # action 2, undo
     t = r.play_next_action(g)  # True, nothing to do.
     assert (f1, f2, f3, t) == (False, False, False, True)
-

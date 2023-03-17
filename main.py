@@ -1,9 +1,14 @@
 import arcade
 import arcade.key as keys
 import math
+
+from action import PaintAction, PaintStep
 from grid import Grid
 from layer_util import get_layers, Layer
 from layers import lighten
+from replay import ReplayTracker
+from undo import UndoTracker
+
 
 class MyWindow(arcade.Window):
     """ Painter Window """
@@ -287,11 +292,12 @@ class MyWindow(arcade.Window):
 
     def on_init(self):
         """Initialisation that occurs after the system initialisation."""
-        pass
+        self.undotracker = UndoTracker()
+        self.replaytracker = ReplayTracker()
 
     def on_reset(self):
         """Called when a window reset is requested."""
-        pass
+        self.on_init()
 
     def on_paint(self, layer: Layer, px, py):
         """
@@ -302,36 +308,48 @@ class MyWindow(arcade.Window):
         px: x position of the brush.
         py: y position of the brush.
         """
+        steps = []
+        paintaction = PaintAction(steps, False)
+        change = False
         for i in range(len(self.grid.grid)):
             for j in range(len(self.grid.grid[0])):
                 distance=abs(i-px)+abs(j-py)
                 if distance <= self.grid.brush_size:
                     self.grid.grid[i][j].add(layer)
+                    steps.append(PaintStep((i,j),layer))
+                    paintaction.add_step(PaintStep((i,j),layer))
+                    change = True
+        if change:
+            self.undotracker.add_action(paintaction)
+            self.replaytracker.add_action(paintaction,False)
 
     def on_undo(self):
         """Called when an undo is requested."""
-        pass
+        action = self.undotracker.undo(self.grid)
+        self.replaytracker.add_action(action,True)
 
     def on_redo(self):
         """Called when a redo is requested."""
-        pass
+        action = self.undotracker.redo(self.grid)
+        self.replaytracker.add_action(action,False)
 
     def on_special(self):
         """Called when the special action is requested."""
-        for i in range(len(self.grid.grid)):
-            for j in range(len(self.grid.grid[0])):
-                self.grid.grid[i][j].special()
+        paintaction = PaintAction(None,True)
+        self.grid.special()                 #Call Grid.special
+        self.replaytracker.add_action(paintaction, False)
 
     def on_replay_start(self):
         """Called when the replay starting is requested."""
-        pass
+        self.replaytracker.start_replay()
 
     def on_replay_next_step(self) -> bool:
         """
         Called when the next step of the replay is requested.
         Returns whether the replay is finished.
         """
-        return True
+        self.replaytracker.play_next_action(self.grid)
+
 
     def on_increase_brush_size(self):
         """Called when an increase to the brush size is requested."""
