@@ -6,10 +6,16 @@ from grid import Grid
 
 class UndoTracker:
 
+# Initialise the self.action_list to create a ArrayStack with 100000 memories
+# Initialise the self.undo_action to create a ArrayStack with 100000 memories
     def __init__(self):
-        self.action_list = ArrayStack(1000)
-        self.undo_action = ArrayStack(1000)
+        self.action_list = ArrayStack(100000)
+        self.undo_action = ArrayStack(100000)
 
+# This add_function is add the action to the action_list.
+# First, checking the action_list is full or not.
+# If the action_list is full do nothing and return None.
+# Otherwise, add the action to the action_list by implementing push method.
     def add_action(self, action: PaintAction) -> None:
         """
         Adds an action to the undo tracker.
@@ -21,6 +27,9 @@ class UndoTracker:
             self.action_list.push(action)
         return None
 
+# This undo function is to undo the last action
+# First, checking the action_list is empty or not.
+# If the action_list is empty, do nothing and return None
     def undo(self, grid: Grid) -> PaintAction | None:
         """
         Undo an operation, and apply the relevant action to the grid.
