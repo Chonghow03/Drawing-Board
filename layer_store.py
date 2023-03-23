@@ -106,8 +106,8 @@ class AdditiveLayerStore(LayerStore):
 # Initialise the self.myQueue by using the CircularQueue ADT
 # Initialise the self.myStack by using the ArrayStack ADT
     def __init__(self):
-        self.myQueue = CircularQueue(100000)
-        self.myStack = ArrayStack(100000)
+        self.myQueue = CircularQueue(10000)
+        self.myStack = ArrayStack(10000)
 
 # This add function is to add the layer into the queue (self.myQueue)
 # Before adding the layer into the queue,
@@ -174,8 +174,8 @@ class SequenceLayerStore(LayerStore):
 # Initialise the self.mySortedlist by using the ArraySortedList ADT
 # Initialise the self.lexicographic_list by using the ArraySortedList ADT
     def __init__(self):
-        self.mySortedlist = ArraySortedList(100000)
-        self.lexicographic_list = ArraySortedList(100000)
+        self.mySortedlist = ArraySortedList(10000)
+        self.lexicographic_list = ArraySortedList(10000)
 
 # Before adding the layer into mySortedlist, I have to check the layer is applied in mySortedlist before or not.
 # Due to mySortedlist is add by the form of list, so if I have to deal with the layer in mySortedlist,
