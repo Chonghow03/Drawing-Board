@@ -9,8 +9,8 @@ class UndoTracker:
 # Initialise the self.action_list to create a ArrayStack with 100000 memories
 # Initialise the self.undo_action to create a ArrayStack with 100000 memories
     def __init__(self):
-        self.action_list = ArrayStack(100000)
-        self.undo_action = ArrayStack(100000)
+        self.action_list = ArrayStack(10000)
+        self.undo_action = ArrayStack(10000)
 
 # This add_function is add the action to the action_list.
 # First, checking the action_list is full or not.
@@ -27,9 +27,13 @@ class UndoTracker:
             self.action_list.push(action)
         return None
 
-# This undo function is to undo the last action
+# This undo function is to undo the last action in action_list.
 # First, checking the action_list is empty or not.
-# If the action_list is empty, do nothing and return None
+# If the action_list is empty, do nothing and return None.
+# If the action_list is not empty, popping the top item in action_list.
+# Then implementing undo_apply with the parameter grid.
+# After undo, push the item into the undo_action for redo used.
+# Returning undo at last.
     def undo(self, grid: Grid) -> PaintAction | None:
         """
         Undo an operation, and apply the relevant action to the grid.
@@ -44,6 +48,13 @@ class UndoTracker:
             return undo
         return None
 
+# This function is to redo the last action done by undo.
+# First, checking the undo_action is empty or not.
+# If the undo_action is empty, then do nothing and return None.
+# Otherwise, popping the top action in undo_action and assign it to redo variable.
+# Apply the redo with redo_apply.
+# After the action redo, pushing the redo variable to the action_list.
+# Lastly, return the redo variable.
     def redo(self, grid: Grid) -> PaintAction | None:
         """
         Redo an operation that was previously undone.
