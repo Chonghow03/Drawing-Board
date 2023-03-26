@@ -61,6 +61,9 @@ class ArraySortedList(SortedList[T]):
         for i in range(len(self), index, -1):
             self.array[i] = self.array[i - 1]
 
+# Time complexity analysis:
+# Worst case:O(len(self)-index)
+# Best case:O(len(self)-index)
     def _shuffle_left(self, index: int) -> None:
         """ Shuffle items starting at a given position to the left. """
         for i in range(index, len(self)):
@@ -78,6 +81,9 @@ class ArraySortedList(SortedList[T]):
         # referring to the new array
         self.array = new_array
 
+# Time complexity analysis:
+# Worst case: O(len(self)-index)
+# Best case: O(1) (index >=len(self))
     def delete_at_index(self, index: int) -> ListItem:
         """ Delete item at a given position. """
         if index >= len(self):
@@ -87,6 +93,9 @@ class ArraySortedList(SortedList[T]):
         self._shuffle_left(index)
         return item
 
+# Time complexity analysis:
+# Worst case: O(n) (_index_to_add method)
+# Best case: O(log n) (_index_to_add method)
     def index(self, item: ListItem) -> int:
         """ Find the position of a given item in the list. """
         pos = self._index_to_add(item)
@@ -98,6 +107,17 @@ class ArraySortedList(SortedList[T]):
         """ Check if the list is full. """
         return len(self) >= len(self.array)
 
+# Time complexity analysis:
+# In add function, worst case is self.mySortedlist is full and needed to resize and the item to be found the position is at first.
+# The worst case time complexity of resize is O(len(self.mySortedlist))
+# If item is first, we get O(log len(self.mySortedlist)) + O(len(self.mySortedlist)), which gives O(len(self.mySortedlist))
+# Worst case: O(1)(Comp=)*O(O(len(self.mySortedlist))) + O(len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
+# Let n be the length of mySortedlist
+# Thus, the time complexity in worst case is O(n+n) = O(n)
+# For best case the self.mySortedlist is not full and the item position is at the last.
+# For self._index_to_add, if item is last, we get O(log len(self.mySortedlist)) + O(1) which gives O(log len(self.mySortedlist)).
+# Best case: O(1)(Comp==) + O(log len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
+# Hence, the time complexity in best case is O(log n)
     def add(self, item: ListItem) -> None:
         """ Add new element to the list. """
         if self.is_full():
