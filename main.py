@@ -290,21 +290,35 @@ class MyWindow(arcade.Window):
 
     # STUDENT PART
 
-    def on_init(self):
-        """Initialisation that occurs after the system initialisation."""
+# Explanation coding concept:
 # Initialise self.undotracker instance with the class UndoTracker() for undo and redo used.
 # Initialise self.replaytracker instance with the class ReplayTracker() for replay used.
+
+# Time complexity analysis:
+# Time complexity: O(1)(Assignment) (Linear time)
+# Best case = Worst case
+    def on_init(self):
+        """Initialisation that occurs after the system initialisation."""
         self.undotracker = UndoTracker()
         self.replaytracker = ReplayTracker()
 
+
+# Explanation coding concept:
 # Reset all the instance in self.on_init()
+
+# Time complexity analysis:
+# Time complexity: O(1)(on_init) (Linear time)
+# Best case = Worst case
     def on_reset(self):
         """Called when a window reset is requested."""
         self.on_init()
 
-# Initialise the steps with empty list for storing all the step actions.
-# Initialise the paintaction instance with class PaintAction with two parameters steps and is_special boolean.
-# Initialise the change with boolean False.
+
+# Time complexity analysis:
+# Let the size of self.grid be n
+# Let the size of self.grid[0] be m
+# Worst case:3(O(1)) + O(n) * O(m) * O(1) + O(Comp==) * 4(O(1)) + O(Comp==) * 2(O(1)) = O(n*m)
+# Best case: 3(O(1))(First three assignment) + O(n)(1st for loop) * O(m)(2nd for loop) * O(1)(distance assignment) = O(n*m)
     def on_paint(self, layer: Layer, px, py):
         """
         Called when a grid square is clicked on, which should trigger painting in the vicinity.
@@ -314,10 +328,15 @@ class MyWindow(arcade.Window):
         px: x position of the brush.
         py: y position of the brush.
         """
+# Explanation coding concept:
+# Initialise the steps with empty list for storing all the step actions.
+# Initialise the paintaction instance with class PaintAction with two parameters steps and is_special boolean.
+# Initialise the change with boolean False.
         steps = []
         paintaction = PaintAction(steps, False)
         change = False
 
+# Explanation coding concept:
 # The two for loop is to loop through the whole grid squares.
 # The distance variable is to calculate the distance between every grid squares and the coordinate of brush on paint.
 # If the distance is smaller than the grid_brush_size, it means that the area where should be painted.
@@ -333,46 +352,91 @@ class MyWindow(arcade.Window):
                     steps.append(PaintStep((i,j),layer))
                     paintaction.add_step(PaintStep((i,j),layer))
                     change = True
+
+# Explanation coding concept:
 # If change is True, add the paintaction instance to undotracker by using add_action function.
 # Adding the paintaction and False (is_undo boolean) to replaytracker by using add_action function.
         if change:
             self.undotracker.add_action(paintaction)
             self.replaytracker.add_action(paintaction,False)
 
+
+# Explanation coding concept:
 # Calling the undo function by self.undotracker instance and assign it to action variable
 # If the action is not None, adding the action to replaytracker by using add_action function with two parameters
 # The parameter boolean is is_undo, thus the boolean is True.
+
+# Time complexity analysis:
+# Worst case: O(1)(undo function) + O(1)(Comp==)*O(1)(add_action) = O(1) (Linear time)
+# Best case: O(1)(undo function) (action is None)
     def on_undo(self):
         """Called when an undo is requested."""
         action = self.undotracker.undo(self.grid)
         if action != None:
             self.replaytracker.add_action(action,True)
 
+
+# Explanation coding concept:
 # Calling the redo function by self.undotracker instance and assign it to action variable
 # If the action is not None, adding the action to replaytracker by using add_action function with two parameters
 # The parameter boolean is is_undo, thus the boolean is False.
+
+# Time complexity analysis:
+# Worst case: O(1)(redo function) + O(1)(Comp==)*O(1)(add_action) = O(1) (Linear time)
+# Best case: O(1)(redo function) (action is None)
     def on_redo(self):
         """Called when a redo is requested."""
         action = self.undotracker.redo(self.grid)
         if action != None:
             self.replaytracker.add_action(action,False)
 
+
+# Explanation coding concept:
 # Create a instance is PaintAction class with two parameters action and is_special.
 # Due to the special does not have list item so put a empty list with it and the boolean is True.
 # Calling the special function of Grid class.
 # Adding the paintaction and the is_undo boolean = False into replaytracker by using add_action function.
+
+# Time complexity analysis:
+# Let the size of self.grid be n
+# Let the size of self.grid[0] be m
+# Let the size of myQueue be a
+# Let the size of myStack be b
+# Let the size of mySortedlist be c
+# Let the size of lexicographic_list be d
+# If draw_style == "SET",
+# Worst case: O(1)(assignment) + O(n*m)(special function) + O(1)(add_function) = O(n*m)
+# Best case: O(1)(assignment) + O(n*m)(special function) + O(1)(add_function) = O(n*m)
+# If draw_style == "ADD"",
+# Worst case: O(1)(assignment) + O(n*m*(a+b))(special function) + O(1)(add_function) = O(n*m*(a+b))
+# Best case: O(1)(assignment) + O(n*m*(a+b))(special function) + O(1)(add_function) = O(n*m*(a+b))
+# If draw_style == "SEQUENCE",
+# Worst case: O(1)(assignment) + O(n*m*(c^2+d^2))(special function) + O(1)(add_function) = O(n*m*(c^2+d^2))
+# Best case: O(1)(assignment) + O(n*m)(special function) + O(1)(add_function) = O(n*m)
     def on_special(self):
         """Called when the special action is requested."""
         paintaction = PaintAction([],True)
         self.grid.special()                 #Call Grid.special
         self.replaytracker.add_action(paintaction, False)
 
+
+# Explanation coding concept:
 # Calling the start_replay function by self.replaytracker instance.
+
+# Time complexity analysis:
+# Time complexity: O(1)(start_replay) (Linear time)
+# Best case = Worst case
     def on_replay_start(self):
         """Called when the replay starting is requested."""
         self.replaytracker.start_replay()
 
+
+# Explanation coding concept:
 # Calling the play_next_action function by self.replaytracker instance with parameter self.grid
+
+# Time complexity analysis:
+# Time complexity: O(1)(play_next_action) (Linear time)
+# Best case = Worst case
     def on_replay_next_step(self) -> bool:
         """
         Called when the next step of the replay is requested.
@@ -380,12 +444,24 @@ class MyWindow(arcade.Window):
         """
         self.replaytracker.play_next_action(self.grid)
 
+
+# Explanation coding concept:
 # Calling the increase_brush_size function with self.grid
+
+# Time complexity analysis:
+# Time complexity: O(1)(increase_brush_size function) (Linear time)
+# Best case = Worst case
     def on_increase_brush_size(self):
         """Called when an increase to the brush size is requested."""
         self.grid.increase_brush_size()
 
+
+# Explanation coding concept:
 # Calling the decrease_brush_size function with self.grid
+
+# Time complexity analysis:
+# Time complexity: O(1)(decrease_brush_size function) (Linear time)
+# Best case = Worst case
     def on_decrease_brush_size(self):
         """Called when a decrease to the brush size is requested."""
         self.grid.decrease_brush_size()
