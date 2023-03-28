@@ -317,7 +317,7 @@ class MyWindow(arcade.Window):
 # Time complexity analysis:
 # Let the size of self.grid be n
 # Let the size of self.grid[0] be m
-# Worst case:3(O(1)) + O(n) * O(m) * O(1) + O(Comp==) * 4(O(1)) + O(Comp==) * 2(O(1)) = O(n*m)
+# Worst case:3(O(1)) + O(n) * O(m) * O(1) + O(Comp==) * 4(O(1)) + O(1) * 2(O(1)) = O(n*m+Comp==)
 # Best case: 3(O(1))(First three assignment) + O(n)(1st for loop) * O(m)(2nd for loop) * O(1)(distance assignment) = O(n*m)
     def on_paint(self, layer: Layer, px, py):
         """
@@ -367,7 +367,7 @@ class MyWindow(arcade.Window):
 # The parameter boolean is is_undo, thus the boolean is True.
 
 # Time complexity analysis:
-# Worst case: O(1)(undo function) + O(1)(Comp==)*O(1)(add_action) = O(1) (Linear time)
+# Worst case: O(1)(undo function) + O(1)(if statement)*O(1)(add_action) = O(1) (Linear time)
 # Best case: O(1)(undo function) (action is None)
     def on_undo(self):
         """Called when an undo is requested."""
@@ -382,7 +382,7 @@ class MyWindow(arcade.Window):
 # The parameter boolean is is_undo, thus the boolean is False.
 
 # Time complexity analysis:
-# Worst case: O(1)(redo function) + O(1)(Comp==)*O(1)(add_action) = O(1) (Linear time)
+# Worst case: O(1)(redo function) + O(1)(if statement)*O(1)(add_action) = O(1) (Linear time)
 # Best case: O(1)(redo function) (action is None)
     def on_redo(self):
         """Called when a redo is requested."""

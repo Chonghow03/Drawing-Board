@@ -50,7 +50,7 @@ class ReplayTracker:
 # In worst case,
 # the first if statement performs O(1) (True or False). The serve action of the time complexity is O(1).
 # The time complexity of the second comparison is O(1)*O(1) (redo_apply and undo_apply). And the return statement is O(1).
-# Thus, the worst case of time complexity is O(1)*O(1)+O(1)*O(1)+O(1) =O(1) (Linear timr)
+# Thus, the worst case of time complexity is O(1)*O(1)+O(1)*O(1)+O(1) =O(1) (Linear time)
 # Due to the time complexity of worst case is O(1). Therefore, in best case (replay_action is empty) is definitely O(1).
     def play_next_action(self, grid: Grid) -> bool:
         """
