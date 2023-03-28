@@ -111,7 +111,7 @@ class ArraySortedList(SortedList[T]):
 # In add function, worst case is self.mySortedlist is full and needed to resize and the item to be found the position is at first.
 # The worst case time complexity of resize is O(len(self.mySortedlist))
 # If item is first, we get O(log len(self.mySortedlist)) + O(len(self.mySortedlist)), which gives O(len(self.mySortedlist))
-# Worst case: O(1)(Comp=)*O(O(len(self.mySortedlist))) + O(len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
+# Worst case: O(1)(if statement)*O(O(len(self.mySortedlist))) + O(len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
 # Let n be the length of mySortedlist
 # Thus, the time complexity in worst case is O(n+n) = O(n)
 # For best case the self.mySortedlist is not full and the item position is at the last.

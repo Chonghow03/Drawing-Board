@@ -17,11 +17,11 @@ class Grid:
 
 
 # Complexity analysis:
-# The if comparison is O(1).
+# The if comparison is O(Comp==).
 # In each if conditions, the first for loop is depends on the size of input x.
 # The second for loop is depends on the size of input y.
 # Inside the for loop all assignment is constant.
-# Thus, in worst case, time complexity is O(1)*O(x)*O(1)+(O(y)*O(1)) = O(x)*O(y)
+# Thus, in worst case, time complexity is O(Comp==)*O(x)*(O(1)+O(y))*O(1) = O(Comp==*x*y)
 #  Best case = worst case
     def __init__(self, draw_style, x, y) -> None:
         """
@@ -44,7 +44,7 @@ class Grid:
 # If the draw_style is "SET", applying the class SetLayerStore() on each grid square.
 # The first for loop is to apply ArrayR with the dimension y to all the rows of grid.
 # The second for loop is to apply SetLayerStore() to every grid square.
-        if draw_style == "SET":
+        if draw_style == self.DRAW_STYLE_SET :
             for row in range(x):
                 self.grid[row]=ArrayR(y)
                 for column in range(y):
@@ -54,7 +54,7 @@ class Grid:
 # If the draw_style is "ADD", applying the class AdditiveLayerStore() on each grid square.
 # The first for loop is to apply ArrayR with the dimension y to all the rows of grid.
 # The second for loop is to apply AdditiveLayerStore() to every grid square.
-        elif draw_style == "ADD":
+        elif draw_style == self.DRAW_STYLE_ADD:
             for row in range(x):
                 self.grid[row]=ArrayR(y)
                 for column in range(y):

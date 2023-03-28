@@ -107,9 +107,8 @@ class SetLayerStore(LayerStore):
 # Returning the result at last.
 
 # Time complexity analysis:
-# Worst case: O(1)(Comp==)*O(1)(Assignment and apply function) + O(1)(Comp==)*O(Assignment and apply function) + O(1) (Return statement) = O(1) (constant)
+# Worst case: O(1)(if statement)*O(1)(Assignment and apply function) + O(1)(if statement)*O(Assignment and apply function) + O(1) (Return statement) = O(1) (constant)
 # Best case = Worst case = O(1) (Indeed!)
-
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
         if self.layer is None:
             result = start
@@ -146,13 +145,13 @@ class AdditiveLayerStore(LayerStore):
 # Before adding the layer into the queue,
 # I have to check the queue has space to add or not by using is_full() abstract method.
 # If myQueue is full, then return False and do nothing, otherwise,
-# return True and add the layer into myQueue by using append method.
+# Return True and add the layer into myQueue by using append method.
 
 # Time complexity analysis:
 # All return statements, assignments and integer comparisons in append method are always constant, hence O(1).
-# Worst case: O(1)(Comp==) + O(1)(append)+O(1)(Return statement) = O(1) (Linear time)
+# Worst case: O(1)(if statement) + O(1)(append)+O(1)(Return statement) = O(1) (Linear time)
 # Best case: If myQueue is full and just return False without append method.
-# O(1)(Comp==) + O(1)(Return statement) = O(1) (Linear time)
+# O(1)(if statement) + O(1)(Return statement) = O(1) (Linear time)
     def add(self, layer: Layer) -> bool:
         if self.myQueue.is_full():
             return False
@@ -168,9 +167,9 @@ class AdditiveLayerStore(LayerStore):
 
 # Time complexity analysis:
 # All return statements, assignments and integer comparisons in serve method are always constant, hence O(1).
-# Worst case: O(1)(Comp==) + O(1)(append)+O(1)(Return statement) = O(1) (Linear time)
+# Worst case: O(1)(if statement) + O(1)(append)+O(1)(Return statement) = O(1) (Linear time)
 # Best case: If myQueue is full and just return False without serve method.
-# O(1)(Comp==) + O(1)(Return statement) = O(1) (Linear time)
+# O(1)(id statement) + O(1)(Return statement) = O(1) (Linear time)
     def erase(self, layer: Layer) -> bool:
         if self.myQueue.is_empty():
             return False
@@ -209,7 +208,7 @@ class AdditiveLayerStore(LayerStore):
 # At last return the tuple of all color
 
 # Time complexity analysis:
-# Worst case: The len(self.myQueue) is not 0, O(1)(Comp==) + O(len(self.myQueue)*O(1)(All assignments, serve, apply and append are constant)
+# Worst case: The len(self.myQueue) is not 0, O(1)(if statement) + O(len(self.myQueue)*O(1)(All assignments, serve, apply and append are constant)
 # + O(1) (return statement)
 # Let the length of self.myQueue be n, thus the worst case time complexity is O(n).
 # Best case is length of self.myQueue is 0, then return start.
@@ -258,12 +257,12 @@ class SequenceLayerStore(LayerStore):
 # In add function, worst case is self.mySortedlist is full and needed to resize and the item to be found the position is at first.
 # The worst case time complexity of resize is O(len(self.mySortedlist))
 # If item is first, we get O(log len(self.mySortedlist)) + O(len(self.mySortedlist)), which gives O(len(self.mySortedlist))
-# Worst case: O(1)(Comp=)*O(O(len(self.mySortedlist))) + O(len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
+# Worst case: O(1)(if statement)*O(O(len(self.mySortedlist))) + O(len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
 # Let n be the length of mySortedlist
 # Thus, the time complexity in worst case is O(n+n) = O(n)
 # For best case the self.mySortedlist is not full and the item position is at the last.
 # For self._index_to_add, if item is last, we get O(log len(self.mySortedlist)) + O(1) which gives O(log len(self.mySortedlist)).
-# Best case: O(1)(Comp==) + O(log len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
+# Best case: O(1)(if statement) + O(log len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
 # Hence, the time complexity in best case is O(log n)
 
 # From above add method in array_sorted_list data structure, the time complexity in worst case is O(n),in best case is O(log n).
@@ -305,7 +304,7 @@ class SequenceLayerStore(LayerStore):
 # Time complexity analysis:
 # Let n be the length of mySortedlist
 # Let m be the length of lexicographic_list
-# Worst case: O(n)(1st for loop) *O(n)(add function) +O(1)(clear) +O(1)(assignment and numerical operations)
+# Worst case: O(1)(if statement)+O(n)(1st for loop) *O(n)(add function) +O(1)(clear) +O(1)(assignment and numerical operations)
 # +O(n-index_of_median)(delete_at_index) +O(m)(2nd for loop) *O(m)(add function) +O(1)(clear) + O(1)(return statement)
 # Thus, the worst case of time complexity is O(n^2+m^2)
 # Best case: O(1) (self.mySortedList is empty and return None)
@@ -345,7 +344,7 @@ class SequenceLayerStore(LayerStore):
 # Returning the start at last.
 
 # Time complexity analysis:
-# Worst case:O(1)(Comp==) * O(n)(1st for loop) * O(1)(All assignment,apply function and return statement) = O(n)
+# Worst case:O(1)(if statement) * O(n)(1st for loop) * O(1)(All assignment,apply function and return statement) = O(n)
 # Best case: O(1) (return statement) (When n is 0)
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
         if len(self.mySortedlist) != 0:
