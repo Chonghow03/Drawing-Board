@@ -68,11 +68,14 @@ class SetLayerStore(LayerStore):
 # If the layer added successfully, return True
 
 # Time complexity analysis:
-# O(1)(Assignment)+O(1)(Return statement) = O(1) (Linear time)
+# O(Comp==)(if statement)*O(1)(Assignment)+O(1)(Return statement) = O(Comp==)
 # Best case = Worst case
     def add(self, layer: Layer) -> bool:
-        self.layer = layer
-        return True
+        if self.layer != layer:
+            self.layer = layer
+            return True
+        else:
+            return False
 
 # Explanation coding concept:
 # This function is to remove the layer from self.layer
@@ -80,11 +83,14 @@ class SetLayerStore(LayerStore):
 # Thus the layer removed successfully and return True
 
 # Time complexity analysis:
-# O(1)(Assignment)+O(1)(Return statement) = O(1) (Linear time)
+# O(1)(if statement)*O(1)(Assignment)+O(1)(Return statement) = O(1) (Linear time)
 # Best case = Worst case
     def erase(self, layer: Layer) -> bool:
-        self.layer = None
-        return True
+        if self.layer is not None:
+            self.layer = None
+            return True
+        else:
+            return False
 
 # Explanation coding concept:
 # This function is acting like a switch
@@ -107,7 +113,8 @@ class SetLayerStore(LayerStore):
 # Returning the result at last.
 
 # Time complexity analysis:
-# Worst case: O(1)(if statement)*O(1)(Assignment and apply function) + O(1)(if statement)*O(Assignment and apply function) + O(1) (Return statement) = O(1) (constant)
+# Comp(apply) is defined as the time complexity of the apply function.
+# Worst case: O(1)(if statement)*O(1)(Assignment)+O(Comp(apply)(apply function) + O(1)(if statement)*O(Comp(apply))(Assignment and apply function) + O(1) (Return statement) = O(Comp(apply)) (constant)
 # Best case = Worst case = O(1) (Indeed!)
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
         if self.layer is None:
@@ -208,9 +215,10 @@ class AdditiveLayerStore(LayerStore):
 # At last return the tuple of all color
 
 # Time complexity analysis:
-# Worst case: The len(self.myQueue) is not 0, O(1)(if statement) + O(len(self.myQueue)*O(1)(All assignments, serve, apply and append are constant)
+# Comp(apply) is defined as the time complexity of the apply function.
+# Worst case: The len(self.myQueue) is not 0, O(1)(if statement) + O(len(self.myQueue)* (O(Comp(apply)(apply function) + O(1))(All assignments, serve and append are constant)
 # + O(1) (return statement)
-# Let the length of self.myQueue be n, thus the worst case time complexity is O(n).
+# Let the length of self.myQueue be n, thus the worst case time complexity is O(n*Comp(apply)).
 # Best case is length of self.myQueue is 0, then return start.
 # Therefore, the time complexity of best case is O(1).
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
@@ -344,7 +352,8 @@ class SequenceLayerStore(LayerStore):
 # Returning the start at last.
 
 # Time complexity analysis:
-# Worst case:O(1)(if statement) * O(n)(1st for loop) * O(1)(All assignment,apply function and return statement) = O(n)
+# Comp(apply) is defined as the time complexity of the apply function.
+# Worst case:O(1)(if statement) * O(n)(1st for loop) * (O(Comp(apply)(apply function) + O(1)(All assignments and return statement)) = O(n*Comp(apply))
 # Best case: O(1) (return statement) (When n is 0)
     def get_color(self, start, timestamp, x, y) -> tuple[int, int, int]:
         if len(self.mySortedlist) != 0:
