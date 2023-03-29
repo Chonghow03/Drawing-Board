@@ -50,7 +50,8 @@ class UndoTracker:
 # Time complexity analysis:
 # Due to the is_empty method is O(1).So for the first comparison is O(1).
 # The time complexity of pop, undo_apply, and push method is constant, so Big-O notation is O(1).
-# Worst case = O(1)*(O(1)+O(1)+O(1)+O(1)) =O(1)
+# For undo_apply function, if the draw style is sequence layer store, time complexity is O(n^2*Comp==). Otherwise, O(1)
+# Worst case = O(1)*(O(1)+O(1)+O(1)+O(1)) =O(1)(For SET and ADD layer store) | O(1)*(O(1)+O(n^2*Comp==)+O(1)+O(1)) =O(n^2*Comp==)(For SEQUENCE layer store)
 # In best case, the action_list is empty, thus just return statement which is O(1).
     def undo(self, grid: Grid) -> PaintAction | None:
         """
@@ -78,7 +79,8 @@ class UndoTracker:
 # Time complexity analysis:
 # Due to the is_empty method is O(1).So for the first comparison is O(1).
 # The time complexity of pop, redo_apply, and push method is constant, so Big-O notation is O(1).
-# Worst case = O(1)*(O(1)+O(1)+O(1)+O(1)) =O(1)
+# For redo_apply function, if the draw style is sequence layer store, time complexity is O(n^2*Comp==). Otherwise, O(1)
+# Worst case = O(1)*(O(1)+O(1)+O(1)+O(1)) =O(1)(For SET and ADD layer store) | O(1)*(O(1)+O(n^2*Comp==)+O(1)+O(1)) =O(n^2*Comp==)(For SEQUENCE layer store)
 # In best case, the action_list is empty, thus just return statement which is O(1).
     def redo(self, grid: Grid) -> PaintAction | None:
         """
