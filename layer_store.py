@@ -270,8 +270,7 @@ class SequenceLayerStore(LayerStore):
 # Thus, the time complexity in worst case is O(n+n) = O(n)
 # For best case the self.mySortedlist is not full and the item position is at the last.
 # For self._index_to_add, if item is last, we get O(log len(self.mySortedlist)) + O(1) which gives O(log len(self.mySortedlist)).
-# Best case: O(1)(if statement) + O(log len(self.mySortedlist))(index_to_add method) + O(1)(Assignment) + O(1)(Numerical operation)
-# Hence, the time complexity in best case is O(log n)
+# Best case: O(1)(if statement)
 
 # From above add method in array_sorted_list data structure, the time complexity in worst case is O(n),in best case is O(log n).
 # Worst case for whole function: O(n*Comp==)*(O(n)+O(1)) = O(n^2*Comp==)
