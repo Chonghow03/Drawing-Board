@@ -21,6 +21,7 @@ class ReplayTracker:
 
         Useful if you have any setup to do before `play_next_action` should be called.
         """
+        pass
 # Explanation coding concept:
 # This add_action is to add the action and is_undo boolean into replay_action.
 # To add this to parameters into the circularqueue, I use append method to add the tuple of two items into it.

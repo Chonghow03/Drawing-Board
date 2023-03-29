@@ -348,10 +348,10 @@ class MyWindow(arcade.Window):
             for j in range(len(self.grid.grid[0])):
                 distance=abs(i-px)+abs(j-py)
                 if distance <= self.grid.brush_size:
-                    self.grid.grid[i][j].add(layer)
-                    steps.append(PaintStep((i,j),layer))
-                    paintaction.add_step(PaintStep((i,j),layer))
-                    change = True
+                    if self.grid.grid[i][j].add(layer):
+                        steps.append(PaintStep((i,j),layer))
+                        paintaction.add_step(PaintStep((i,j),layer))
+                        change = True
 
 # Explanation coding concept:
 # If change is True, add the paintaction instance to undotracker by using add_action function.
@@ -442,7 +442,8 @@ class MyWindow(arcade.Window):
         Called when the next step of the replay is requested.
         Returns whether the replay is finished.
         """
-        self.replaytracker.play_next_action(self.grid)
+        return self.replaytracker.play_next_action(self.grid)
+
 
 
 # Explanation coding concept:
