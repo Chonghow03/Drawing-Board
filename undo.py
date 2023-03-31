@@ -14,8 +14,8 @@ class UndoTracker:
 # ArrayStack which is O(max_capacity) since the parameter is a constant.
 # Thus the time complexity is linear time O(1).
     def __init__(self):
-        self.action_list = ArrayStack(10000)
-        self.undo_action = ArrayStack(10000)
+        self.action_list = ArrayStack(1000)
+        self.undo_action = ArrayStack(1000)
 
 # Explanation coding concept:
 # This add_function is add the action to the action_list.

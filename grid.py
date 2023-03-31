@@ -44,7 +44,7 @@ class Grid:
 # If the draw_style is "SET", applying the class SetLayerStore() on each grid square.
 # The first for loop is to apply ArrayR with the dimension y to all the rows of grid.
 # The second for loop is to apply SetLayerStore() to every grid square.
-        if draw_style == self.DRAW_STYLE_SET :
+        if draw_style == self.DRAW_STYLE_SET:
             for row in range(x):
                 self.grid[row]=ArrayR(y)
                 for column in range(y):
