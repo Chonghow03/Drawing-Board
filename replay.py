@@ -22,6 +22,7 @@ class ReplayTracker:
         Useful if you have any setup to do before `play_next_action` should be called.
         """
         pass
+
 # Explanation coding concept:
 # This add_action is to add the action and is_undo boolean into replay_action.
 # To add this to parameters into the circularqueue, I use append method to add the tuple of two items into it.
@@ -38,6 +39,8 @@ class ReplayTracker:
         Special, Redo, and Draw all have this is False.
         """
         self.replay_action.append((action, is_undo))
+
+
 # Explanation coding concept:
 # Checking the replay_action is empty or not.
 # If the replay_action is empty, means there is no action to replay, thus return False.
